@@ -37,7 +37,7 @@ public class ListenCommand implements BlabberCommand {
 
 			sqlQuery = "SELECT blab_name FROM users WHERE username = '" + blabberUsername + "'";
 			Statement sqlStatement = connect.createStatement();
-			logger.info(StringUtils.normalizeSpace(sqlQuery));
+			logger.info(sqlQuery);
 			ResultSet result = sqlStatement.executeQuery(sqlQuery);
 			result.next();
 			
