@@ -8,6 +8,7 @@ import javax.servlet.ServletContext;
 
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
+import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
@@ -45,7 +46,14 @@ public class ToolsController {
 
 		return "tools";
 	}
-
+	/* Vuln Method */
+	public static void main(String[] args) throws Exception {
+		String candidate = args[0];
+		String hashed = BCrypt.hashpw(candidate, BCrypt.gensalt(12));
+	
+		BCrypt.checkpw(candidate, hashed);
+	}
+	
 	private String ping(String host)
 	{
 		String output = "";
