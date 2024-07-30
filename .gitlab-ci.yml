@@ -16,11 +16,32 @@ build_app:
 veracode_scan:
     image: veracode/api-wrapper-java:latest
     stage: security
+    except:
+        refs:
+        - master
     script:
         # the scan WILL fail, so just fire and forget
         - java -jar /opt/veracode/api-wrapper.jar -vid $VERACODE_API_ID -vkey $VERACODE_API_KEY
             -action UploadAndScan -appname "VulnImages-Verademolabs" -createprofile true
             -filepath target/verademo.war -version "Commit ${CI_COMMIT_SHA:0:8} - Job $CI_JOB_ID"
+    allow_failure: true
+
+veracode_pipeline_scan:
+    image: veracode/pipeline-scan:latest
+    stage: security
+    script:
+    - java -jar /opt/veracode/pipeline-scan.jar
+        -vid $VERACODE_API_ID
+        -vkey $VERACODE_API_KEY
+        -f target/*.war
+        --fail_on_severity="Very High, High"
+    artifacts:
+        name: ${CI_PROJECT_NAME}_${CI_COMMIT_REF_NAME}_${CI_COMMIT_SHA}_devsecops-results
+        paths:
+        - results.json
+        - results.txt
+        expire_in: 5 hours
+        when: always
     allow_failure: true
 
 veracode_sca_scan:
