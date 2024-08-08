@@ -35,7 +35,7 @@ veracode_pipeline_scan:
         -vkey $VERACODE_API_KEY
         -f target/*.war
         --fail_on_severity="Very High, High"
-        --verbose true
+        #--verbose true
     artifacts:
         name: ${CI_PROJECT_NAME}_${CI_COMMIT_REF_NAME}_${CI_COMMIT_SHA}_devsecops-results
         paths:
