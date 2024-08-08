@@ -20,7 +20,7 @@ veracode_scan:
         refs:
         - master
     script:
-        # the scan WILL fail, so just fire and forget
+        # the scan WILL fail, so just fire and forget it
         - java -jar /opt/veracode/api-wrapper.jar -vid $VERACODE_API_ID -vkey $VERACODE_API_KEY
             -action UploadAndScan -appname "VulnImages-Verademolabs" -createprofile true
             -filepath target/verademo.war -version "Commit ${CI_COMMIT_SHA:0:8} - Job $CI_JOB_ID"
